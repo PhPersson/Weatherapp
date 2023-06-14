@@ -7,39 +7,68 @@ void main() {
 class WeatherApp extends StatefulWidget {
   const WeatherApp({super.key});
 
+  static void setThemeMode(BuildContext context, ThemeMode themeMode) {
+    final _WeatherAppState state = context.findAncestorStateOfType<_WeatherAppState>()!;
+    state.setThemeMode(themeMode);
+  }
+
   @override
   _WeatherAppState createState() => _WeatherAppState();
 }
 
 class _WeatherAppState extends State<WeatherApp> {
+  ThemeMode _themeMode = ThemeMode.system;
+
+  void setThemeMode(ThemeMode themeMode) {
+    setState(() {
+      _themeMode = themeMode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: _themeMode,
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
+
+  void _toggleTheme(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      WeatherApp.setThemeMode(context, ThemeMode.light);
+    } else {
+      WeatherApp.setThemeMode(context, ThemeMode.dark);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amberAccent,
-        title: const Text('Weather App'),
-        actions: const [
+        title: const Text('Flutter App'),
+        actions: [
           Row(
             children: [
-              Icon(Icons.lightbulb_outline),
-              Icon(Icons.nightlight_round),
+              const Icon(Icons.lightbulb_outline),
+              Switch(
+                value: Theme.of(context).brightness == Brightness.dark,
+                onChanged: (_) => _toggleTheme(context),
+              ),
+              const Icon(Icons.nightlight_round),
             ],
           ),
         ],
