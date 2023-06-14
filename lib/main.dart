@@ -7,14 +7,11 @@ void main() {
 class WeatherApp extends StatefulWidget {
   const WeatherApp({super.key});
 
-
   @override
   _WeatherAppState createState() => _WeatherAppState();
 }
 
 class _WeatherAppState extends State<WeatherApp> {
-
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -32,13 +29,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amberAccent,
         title: const Text('Weather App'),
+        actions: const [
+          Row(
+            children: [
+              Icon(Icons.lightbulb_outline),
+              Icon(Icons.nightlight_round),
+            ],
+          ),
+        ],
       ),
     );
   }
