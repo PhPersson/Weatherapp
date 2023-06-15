@@ -1,8 +1,7 @@
 # Weatherapp
 
 A weather app made with Flutter.
-![Weatherapp](/image/weatherapp.png)
-
+![Weatherapp](/images/weatherapp.png)
 <details>
   <summary>Darkmode</summary>
   
