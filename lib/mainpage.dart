@@ -37,7 +37,6 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        backgroundColor: Colors.amberAccent,
         title: const Text('WeatherApp'),
         actions: [
           Row(
