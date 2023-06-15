@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'about.dart';
 
 void main() {
   runApp(const WeatherApp());
@@ -33,7 +34,7 @@ class _WeatherAppState extends State<WeatherApp> {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
-      home: const HomePage(),
+      home: AboutPage(),
     );
   }
 }
