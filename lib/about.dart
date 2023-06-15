@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
-class AboutPage extends StatelessWidget {
+class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
 
   @override
+  _AboutPageState createState() => _AboutPageState();
+}
+
+class _AboutPageState extends State<AboutPage> {
+  
+
+  @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'About',
-      home: Scaffold(
+    return const Scaffold(
         body: Center(
           child: Padding(
             padding: EdgeInsets.all(16.0),
@@ -36,7 +41,6 @@ class AboutPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

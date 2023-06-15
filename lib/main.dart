@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'about.dart';
+import 'mainpage.dart';
 
 void main() {
   runApp(const WeatherApp());
@@ -9,8 +9,7 @@ class WeatherApp extends StatefulWidget {
   const WeatherApp({super.key});
 
   static void setThemeMode(BuildContext context, ThemeMode themeMode) {
-    final _WeatherAppState state =
-        context.findAncestorStateOfType<_WeatherAppState>()!;
+    final _WeatherAppState state = context.findAncestorStateOfType<_WeatherAppState>()!;
     state.setThemeMode(themeMode);
   }
 
@@ -34,62 +33,8 @@ class _WeatherAppState extends State<WeatherApp> {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
-      home: AboutPage(),
+      home: MainPage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  void _toggleTheme(BuildContext context) {
-    if (Theme.of(context).brightness == Brightness.dark) {
-      WeatherApp.setThemeMode(context, ThemeMode.light);
-    } else {
-      WeatherApp.setThemeMode(context, ThemeMode.dark);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.amberAccent,
-        title: const Text('Weather App'),
-        actions: [
-          Row(
-            children: [
-              const Icon(Icons.lightbulb_outline),
-              Switch(
-                value: Theme.of(context).brightness == Brightness.dark,
-                onChanged: (_) => _toggleTheme(context),
-              ),
-              const Icon(Icons.nightlight_round),
-            ],
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cloud),
-            label: 'Forecast',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.info),
-            label: 'About',
-          ),
-        ],
-      ),
-    );
-  }
-}
