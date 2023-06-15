@@ -8,7 +8,8 @@ class WeatherApp extends StatefulWidget {
   const WeatherApp({super.key});
 
   static void setThemeMode(BuildContext context, ThemeMode themeMode) {
-    final _WeatherAppState state = context.findAncestorStateOfType<_WeatherAppState>()!;
+    final _WeatherAppState state =
+        context.findAncestorStateOfType<_WeatherAppState>()!;
     state.setThemeMode(themeMode);
   }
 
@@ -45,7 +46,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   void _toggleTheme(BuildContext context) {
     if (Theme.of(context).brightness == Brightness.dark) {
       WeatherApp.setThemeMode(context, ThemeMode.light);
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amberAccent,
-        title: const Text('Flutter App'),
+        title: const Text('Weather App'),
         actions: [
           Row(
             children: [
@@ -70,6 +70,22 @@ class _HomePageState extends State<HomePage> {
               ),
               const Icon(Icons.nightlight_round),
             ],
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.cloud),
+            label: 'Forecast',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.info),
+            label: 'About',
           ),
         ],
       ),
