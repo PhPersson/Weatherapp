@@ -45,15 +45,20 @@ class _WeatherPageState extends State<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
+    const rainBlueLight = Color(0xFF4480C6);
+    const rainBlueDark = Color.fromARGB(255, 75, 97, 207);
+    const rainGradient = [rainBlueLight, rainBlueDark];
     final currentTime = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return Scaffold(
       body: Center(
         child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [Colors.blue[300]!, Colors.green[400]!])),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: rainGradient,
+            ),
+          ),
           child: weatherData != null
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
