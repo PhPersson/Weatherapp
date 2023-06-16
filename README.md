@@ -7,7 +7,7 @@ This Flutter app displays the current and forecast weather information for a spe
 <details>
   <summary>Darkmode</summary>
   
-![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTVoMjhzanJyOWVrZ3R5dnI0dG13bzdvMzVkaGt6bXk3NWFuOW1kbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/XmMKiRoXNt0l3qgcuI/giphy.gif)
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaG8wenRlN3hjYTRwYnVycDhvYXJuaTZ3YjI3OXZ5dG5xdDFzb2xzNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HcYnpjksEgyz1Sgb5e/giphy.gif)
 </details>
 
 
