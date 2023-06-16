@@ -17,7 +17,7 @@ To run this app, follow the steps below:
 1. Ensure you have Flutter installed on your machine.
 2. Clone the repository or download the source code files.
 3. Open the project in your preferred Flutter development environment.
-4. Obtain an API key from OpenWeatherMap by following these steps:
+4. Obtain an API key from OpenWeatherMap
 5. Visit the OpenWeatherMap website at https://openweathermap.org/.
 6. Create an account or log in to your existing account.
 7. Navigate to the API keys section and generate a new API key.
