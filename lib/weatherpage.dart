@@ -32,8 +32,8 @@ class _WeatherPageState extends State<WeatherPage> {
       } else {
         log('Failed to fetch weather data. Error code: ${response.statusCode}');
       }
-    } catch (e) {
-      log('Failed to fetch weather data: $e');
+    } catch (error) {
+      log('Failed to fetch weather data: $error');
     }
   }
 
@@ -45,20 +45,10 @@ class _WeatherPageState extends State<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
-    const rainBlueLight = Color(0xFF4480C6);
-    const rainBlueDark = Color.fromARGB(255, 75, 97, 207);
-    const rainGradient = [rainBlueLight, rainBlueDark];
     final currentTime = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return Scaffold(
       body: Center(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: rainGradient,
-            ),
-          ),
+
           child: weatherData != null
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +103,7 @@ class _WeatherPageState extends State<WeatherPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                'Direction: ${weatherData!['wind']['deg']}',
+                                'Direction: ${weatherData!['wind']['deg']}°',
                                 style: const TextStyle(fontSize: 18),
                               ),
                             ),
@@ -133,12 +123,10 @@ class _WeatherPageState extends State<WeatherPage> {
                 )
               : const CircularProgressIndicator(),
         ),
-      ),
     );
   }
 
   IconData _getWeatherIcon(int weatherId) {
-    weatherId = 800;
     if (weatherId >= 500 && weatherId <= 504) {
       return Icons.grain;
     } else if (weatherId >= 701 && weatherId <= 781) {
