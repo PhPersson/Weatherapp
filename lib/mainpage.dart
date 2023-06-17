@@ -43,7 +43,7 @@ class _MainPageState extends State<MainPage> {
         actions: [
           Row(
             children: [
-              const Icon(Icons.lightbulb_outline),
+              const Icon(Icons.wb_sunny_outlined),
               Switch(
                 value: Theme.of(context).brightness == Brightness.dark,
                 onChanged: (_) => _toggleTheme(context),
@@ -65,11 +65,6 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.cloud),
             label: 'Forecast',
-          // ),
-          //         BottomNavigationBarItem(
-          //   icon: Icon(Icons.search),
-          //   label: 'Search',
-          // ),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.info),
