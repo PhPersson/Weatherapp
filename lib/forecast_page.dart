@@ -42,8 +42,7 @@ class _ForecastPageState extends State<ForecastPage> {
   Future<Position> fetchGeolocation() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
+    if (permission == LocationPermission.denied) {
       return Future.error('Location permissions are denied');
     }
     return await Geolocator.getCurrentPosition();
