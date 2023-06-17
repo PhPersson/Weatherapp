@@ -3,7 +3,7 @@
 This Flutter app displays the current and forecast weather information for a specific location. It uses the OpenWeatherMap API to fetch the weather data and displays it in a user-friendly format.
 
 
-![Weatherapp](/images/weatherapp.png)
+![Weatherapp](/.github/images/weatherapp.png)
 
 <details>
   
