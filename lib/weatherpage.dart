@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'env_variables.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:quickalert/quickalert.dart';
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -17,7 +18,8 @@ class _WeatherPageState extends State<WeatherPage> {
   Map<String, dynamic>? weatherData;
 
   Future<void> fetchWeatherData() async {
-    Position position = await fetchGeolocation(); //The variable of position needs to wait for the method to get the users location first
+    Position position =
+        await fetchGeolocation(); //The variable of position needs to wait for the method to get the users location first
     var apiKey = EnvVariables.apiKey;
     var latitude = position.latitude;
     var longitude = position.longitude;
@@ -40,14 +42,21 @@ class _WeatherPageState extends State<WeatherPage> {
     }
   }
 
-  Future<Position> fetchGeolocation() async {
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) { 
-        return Future.error('Location permissions are denied');
-    }
-    return await Geolocator.getCurrentPosition();
-  }
+Future<Position> fetchGeolocation() async {
+  LocationPermission permission = await Geolocator.checkPermission();
+  permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.deniedForever) {
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        title: 'Could not get your position!',
+        text: 'It seems like location permissions are denied for this app!',
+      );
+      permission = await Geolocator.requestPermission();
+    } 
+  return await Geolocator.getCurrentPosition();
+}
+
 
   @override
   void initState() {
