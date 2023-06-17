@@ -1,8 +1,7 @@
 import 'dart:developer';
-
+import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'env_variables.dart';
 
@@ -18,10 +17,12 @@ class _ForecastPageState extends State<ForecastPage> {
   var cityName = '';
 
   Future<void> fetchForecastData() async {
-    const apiKey = EnvVariables.apiKey;
-    const city = 'Ystad';
+    Position position = await fetchGeolocation();
+    var apiKey = EnvVariables.apiKey;
+    var latitude = position.latitude;
+    var longitude = position.longitude;
     final url =
-        'https://api.openweathermap.org/data/2.5/forecast?q=$city&appid=$apiKey&units=metric';
+        'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -36,6 +37,16 @@ class _ForecastPageState extends State<ForecastPage> {
     } catch (error) {
       log('Error fetching forecast data: $error');
     }
+  }
+
+  Future<Position> fetchGeolocation() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      return Future.error('Location permissions are denied');
+    }
+    return await Geolocator.getCurrentPosition();
   }
 
   @override

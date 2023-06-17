@@ -4,8 +4,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'env_variables.dart';
 import 'package:intl/intl.dart';
+import 'package:geolocator/geolocator.dart';
 
 class WeatherPage extends StatefulWidget {
+  const WeatherPage({super.key});
+
   @override
   _WeatherPageState createState() => _WeatherPageState();
 }
@@ -13,13 +16,13 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   Map<String, dynamic>? weatherData;
 
-  // Method to fetch weather data
   Future<void> fetchWeatherData() async {
-    const apiKey = EnvVariables.apiKey;
-    const latitude = '55.60587';
-    const longitude = "13.00073";
+    Position position = await fetchGeolocation(); //The variable of position needs to wait for the method to get the users location first
+    var apiKey = EnvVariables.apiKey;
+    var latitude = position.latitude;
+    var longitude = position.longitude;
 
-    const url =
+    var url =
         'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
 
     try {
@@ -37,6 +40,15 @@ class _WeatherPageState extends State<WeatherPage> {
     }
   }
 
+  Future<Position> fetchGeolocation() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) { 
+        return Future.error('Location permissions are denied');
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -48,81 +60,80 @@ class _WeatherPageState extends State<WeatherPage> {
     final currentTime = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return Scaffold(
       body: Center(
-
-          child: weatherData != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
-                          style: const TextStyle(fontSize: 40),
+        child: weatherData != null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
+                        style: const TextStyle(fontSize: 40),
+                      ),
+                      const Icon(
+                        Icons.thermostat,
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Icon(
+                        _getWeatherIcon(weatherData!['weather'][0]['id']),
+                        size: 60,
+                      ),
+                      Text(
+                        '${weatherData!['weather'][0]['description']}',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
                         ),
-                        const Icon(
-                          Icons.thermostat,
-                          size: 30,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Icon(
-                          _getWeatherIcon(weatherData!['weather'][0]['id']),
-                          size: 60,
-                        ),
-                        Text(
-                          '${weatherData!['weather'][0]['description']}',
-                          style: const TextStyle(
-                            fontStyle: FontStyle.italic,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'But it feels like: ${weatherData!['main']['feels_like']}',
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      const Icon(Icons.thermostat)
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Wind: ${weatherData!['wind']['speed']}m/s',
+                            style: const TextStyle(fontSize: 18),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'But it feels like: ${weatherData!['main']['feels_like']}',
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        const Icon(Icons.thermostat)
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Wind: ${weatherData!['wind']['speed']}m/s',
+                          const Icon(Icons.air),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'Direction: ${weatherData!['wind']['deg']}°',
                               style: const TextStyle(fontSize: 18),
                             ),
-                            const Icon(Icons.air),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Direction: ${weatherData!['wind']['deg']}°',
-                                style: const TextStyle(fontSize: 18),
-                              ),
-                            ),
-                            const Icon(
-                              Icons.navigation,
-                              size: 24,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Text(
-                      currentTime,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ],
-                )
-              : const CircularProgressIndicator(),
-        ),
+                          ),
+                          const Icon(
+                            Icons.navigation,
+                            size: 24,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    currentTime,
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ],
+              )
+            : const CircularProgressIndicator(),
+      ),
     );
   }
 
