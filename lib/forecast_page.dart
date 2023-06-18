@@ -131,3 +131,38 @@ IconData _getWeatherIcon(int weatherId) {
   }
   return Icons.error;
 }
+
+
+class ForeCast extends StatelessWidget {
+  final String text;
+  final IconData icon;
+  final TextStyle textStyle;
+  final double iconSize;
+
+  ForeCast({
+    required this.text,
+    required this.icon,
+    required this.textStyle,
+    double iconSize = 24,
+  }) : iconSize = iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          text,
+          style: textStyle,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(
+            icon,
+            size: iconSize,
+          ),
+        ),
+      ],
+    );
+  }
+}
