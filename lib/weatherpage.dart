@@ -19,7 +19,7 @@ class _WeatherPageState extends State<WeatherPage> {
 
   Future<void> fetchWeatherData() async {
     Position position =
-        await fetchGeolocation(); //The variable of position needs to wait for the method to get the users location first
+        await fetchGeolocation();
     var apiKey = EnvVariables.apiKey;
     var latitude = position.latitude;
     var longitude = position.longitude;
@@ -38,14 +38,15 @@ class _WeatherPageState extends State<WeatherPage> {
         log('Failed to fetch weather data. Error code: ${response.statusCode}');
       }
     } catch (error) {
-      log('Failed to fetch weather data: $error');
+      log('Failed to fetch weather data: $error ');
     }
   }
 
-Future<Position> fetchGeolocation() async {
-  LocationPermission permission = await Geolocator.checkPermission();
-  permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.deniedForever) {
+  Future<Position> fetchGeolocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.denied) {
       QuickAlert.show(
         context: context,
         type: QuickAlertType.error,
@@ -53,10 +54,9 @@ Future<Position> fetchGeolocation() async {
         text: 'It seems like location permissions are denied for this app!',
       );
       permission = await Geolocator.requestPermission();
-    } 
-  return await Geolocator.getCurrentPosition();
-}
-
+    }
+    return await Geolocator.getCurrentPosition();
+  }
 
   @override
   void initState() {
@@ -73,66 +73,33 @@ Future<Position> fetchGeolocation() async {
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
-                        style: const TextStyle(fontSize: 40),
-                      ),
-                      const Icon(
-                        Icons.thermostat,
-                        size: 30,
-                      ),
-                    ],
+                  Weather(
+                      text:
+                          '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
+                      icon: Icons.thermostat,
+                      textStyle: TextStyle(fontSize: 40)),
+                  Weather(
+                    text: '${weatherData!['weather'][0]['description']}',
+                    icon: _getWeatherIcon(weatherData!['weather'][0]['id']),
+                    textStyle: TextStyle(
+                      fontStyle: FontStyle.italic,
+                    ),
+                    
                   ),
-                  Column(
-                    children: [
-                      Icon(
-                        _getWeatherIcon(weatherData!['weather'][0]['id']),
-                        size: 60,
-                      ),
-                      Text(
-                        '${weatherData!['weather'][0]['description']}',
-                        style: const TextStyle(
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
+                  Weather(
+                    text:
                         'But it feels like: ${weatherData!['main']['feels_like']}',
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const Icon(Icons.thermostat)
-                    ],
+                    icon: Icons.thermostat,
+                    textStyle: TextStyle(fontSize: 18),
                   ),
-                  Column(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Wind: ${weatherData!['wind']['speed']}m/s',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          const Icon(Icons.air),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Direction: ${weatherData!['wind']['deg']}°',
-                              style: const TextStyle(fontSize: 18),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.navigation,
-                            size: 24,
-                          ),
-                        ],
-                      ),
+                      Weather(
+                          text: 'Wind: ${weatherData!['wind']['speed']}m/s',
+                          textStyle: TextStyle(fontSize: 18),
+                          icon: Icons.air),
+                      Weather(text: 'Direction: ${weatherData!['wind']['deg']}°', icon: Icons.navigation, iconSize: 24, textStyle: TextStyle(fontSize: 18))
                     ],
                   ),
                   Text(
@@ -157,5 +124,39 @@ Future<Position> fetchGeolocation() async {
       return Icons.wb_cloudy;
     }
     return Icons.error;
+  }
+}
+
+class Weather extends StatelessWidget {
+  final String text;
+  final IconData icon;
+  final TextStyle textStyle;
+  final double iconSize;
+
+  Weather({
+    required this.text,
+    required this.icon,
+    required this.textStyle,
+    double iconSize = 24,
+  }) : iconSize = iconSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          text,
+          style: textStyle,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(
+            icon,
+            size: iconSize,
+          ),
+        ),
+      ],
+    );
   }
 }
