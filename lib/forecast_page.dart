@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'env_variables.dart';
-import 'package:quickalert/quickalert.dart';
 
 class ForecastPage extends StatefulWidget {
   const ForecastPage({super.key});
