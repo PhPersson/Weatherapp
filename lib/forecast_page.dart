@@ -73,39 +73,34 @@ class _ForecastPageState extends State<ForecastPage> {
                 var forecast = forecastData[index];
                 return Column(
                   children: [
-                    Text(
-                      '${forecast['dt_txt']}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    _ForeCast(
+                      text: '${forecast['dt_txt']}',
+                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     if (forecast['weather'] != null)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          _getWeatherIcon(forecast['weather'][0]['id']),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _ForeCast(
+                            text: '${forecast['main']['temp']}°C',
+                            textStyle:
+                                const TextStyle(fontWeight: FontWeight.bold),
+                            icon: _getWeatherIcon(forecast['weather'][0]['id']),
+                          ),
+                          _ForeCast(
+                            text: '${forecast['weather'][0]['descriptiron']}',
+                            textStyle:
+                                const TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ],
                       ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '${forecast['main']['temp']}°C',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '${forecast['weather'][0]['description']}',
-                        style: const TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('${forecast['wind']['speed']}m/s'),
+                        _ForeCast(
+                          text: 'Wind: ${forecast['wind']['speed']}m/s',
+                          icon: Icons.air,
                         ),
-                        const Icon(Icons.air),
                       ],
                     ),
                   ],
@@ -133,17 +128,16 @@ IconData _getWeatherIcon(int weatherId) {
   return Icons.error;
 }
 
-
-class ForeCast extends StatelessWidget {
+class _ForeCast extends StatelessWidget {
   final String text;
-  final IconData icon;
-  final TextStyle textStyle;
+  final TextStyle? textStyle;
+  final IconData? icon;
   final double iconSize;
 
-  ForeCast({
+  _ForeCast({
     required this.text,
-    required this.icon,
-    required this.textStyle,
+    this.icon,
+    this.textStyle,
     double iconSize = 24,
   }) : iconSize = iconSize;
 
