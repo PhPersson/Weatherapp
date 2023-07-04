@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'env_variables.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ForecastPage extends StatefulWidget {
   const ForecastPage({super.key});
@@ -73,7 +74,7 @@ class _ForecastPageState extends State<ForecastPage> {
                 var forecast = forecastData[index];
                 return Column(
                   children: [
-                    ForeCast(
+                    _ForeCast(
                       text: '${forecast['dt_txt']}',
                       textStyle: const TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -81,13 +82,13 @@ class _ForecastPageState extends State<ForecastPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ForeCast(
+                          _ForeCast(
                             text: '${forecast['main']['temp']}°C',
                             textStyle:
                                 const TextStyle(fontWeight: FontWeight.bold),
                             icon: _getWeatherIcon(forecast['weather'][0]['id']),
                           ),
-                          ForeCast(
+                          _ForeCast(
                             text: '${forecast['weather'][0]['description']}',
                             textStyle:
                                 const TextStyle(fontStyle: FontStyle.italic),
@@ -97,7 +98,7 @@ class _ForecastPageState extends State<ForecastPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ForeCast(
+                        _ForeCast(
                           text: 'Wind: ${forecast['wind']['speed']}m/s',
                           icon: Icons.air,
                         ),
@@ -128,13 +129,13 @@ IconData _getWeatherIcon(int weatherId) {
   return Icons.error;
 }
 
-class ForeCast extends StatelessWidget {
+class _ForeCast extends StatelessWidget {
   final String text;
   final TextStyle? textStyle;
   final IconData? icon;
   final double iconSize;
 
-  ForeCast({
+  _ForeCast({
     required this.text,
     this.icon,
     this.textStyle,
