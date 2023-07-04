@@ -120,6 +120,7 @@ class _ForecastPageState extends State<ForecastPage> {
 }
 
 IconData _getWeatherIcon(int weatherId) {
+  // The list of what the weather id:s corresponds to can be found at https://openweathermap.org/weather-conditions
   if (weatherId >= 500 && weatherId <= 504) {
     return Icons.grain;
   } else if (weatherId >= 701 && weatherId <= 781) {

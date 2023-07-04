@@ -68,47 +68,55 @@ class _WeatherPageState extends State<WeatherPage> {
   Widget build(BuildContext context) {
     final currentTime = DateFormat('yyyy-MM-dd').format(DateTime.now());
     return Scaffold(
-      body: Center(
-        child: weatherData != null
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Weather(
-                      text:
-                          '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
-                      icon: Icons.thermostat,
-                      textStyle: TextStyle(fontSize: 40)),
-                  Weather(
-                    text: '${weatherData!['weather'][0]['description']}',
-                    icon: _getWeatherIcon(weatherData!['weather'][0]['id']),
-                    textStyle: TextStyle(
-                      fontStyle: FontStyle.italic,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('background.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: weatherData != null
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Weather(
+                        text:
+                            '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
+                        icon: Icons.thermostat,
+                        textStyle: TextStyle(fontSize: 40)),
+                    Weather(
+                      text: '${weatherData!['weather'][0]['description']}',
+                      icon: _getWeatherIcon(weatherData!['weather'][0]['id']),
+                      textStyle: TextStyle(
+                        fontStyle: FontStyle.italic,
+                      ),
+                      
                     ),
-                    
-                  ),
-                  Weather(
-                    text:
-                        'But it feels like: ${weatherData!['main']['feels_like']}',
-                    icon: Icons.thermostat,
-                    textStyle: TextStyle(fontSize: 18),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Weather(
-                          text: 'Wind: ${weatherData!['wind']['speed']}m/s',
-                          textStyle: TextStyle(fontSize: 18),
-                          icon: Icons.air),
-                      Weather(text: 'Direction: ${weatherData!['wind']['deg']}°', icon: Icons.navigation, iconSize: 24, textStyle: TextStyle(fontSize: 18))
-                    ],
-                  ),
-                  Text(
-                    currentTime,
-                    style: const TextStyle(fontSize: 13),
-                  ),
-                ],
-              )
-            : const CircularProgressIndicator(),
+                    Weather(
+                      text:
+                          'But it feels like: ${weatherData!['main']['feels_like']}',
+                      icon: Icons.thermostat,
+                      textStyle: TextStyle(fontSize: 18),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Weather(
+                            text: 'Wind: ${weatherData!['wind']['speed']}m/s',
+                            textStyle: TextStyle(fontSize: 18),
+                            icon: Icons.air),
+                        Weather(text: 'Direction: ${weatherData!['wind']['deg']}°', icon: Icons.navigation, iconSize: 24, textStyle: TextStyle(fontSize: 18))
+                      ],
+                    ),
+                    Text(
+                      currentTime,
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                  ],
+                )
+              : const CircularProgressIndicator(),
+        ),
       ),
     );
   }
