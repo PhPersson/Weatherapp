@@ -85,20 +85,20 @@ class _WeatherPageState extends State<WeatherPage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Weather(
+                  _Weather(
                     text:
                         '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
                     icon: Icons.thermostat,
                     textStyle: TextStyle(fontSize: 40),
                   ),
-                  Weather(
+                  _Weather(
                     text: '${weatherData!['weather'][0]['description']}',
                     icon: _getWeatherIcon(weatherData!['weather'][0]['id']),
                     textStyle: TextStyle(
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  Weather(
+                  _Weather(
                     text:
                         'But it feels like: ${weatherData!['main']['feels_like']}',
                     icon: Icons.thermostat,
@@ -107,12 +107,12 @@ class _WeatherPageState extends State<WeatherPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Weather(
+                      _Weather(
                         text: 'Wind: ${weatherData!['wind']['speed']}m/s',
                         textStyle: TextStyle(fontSize: 18),
                         icon: Icons.air,
                       ),
-                      Weather(
+                      _Weather(
                         text: 'Direction: ${weatherData!['wind']['deg']}°',
                         icon: Icons.navigation,
                         iconSize: 24,
@@ -160,13 +160,13 @@ class _WeatherPageState extends State<WeatherPage> {
   }
 }
 
-class Weather extends StatelessWidget {
+class _Weather extends StatelessWidget {
   final String text;
   final IconData icon;
   final TextStyle textStyle;
   final double iconSize;
 
-  Weather({
+  _Weather({
     required this.text,
     required this.icon,
     required this.textStyle,
