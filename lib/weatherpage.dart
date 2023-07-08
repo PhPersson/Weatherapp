@@ -32,7 +32,7 @@ class _WeatherPageState extends State<WeatherPage> {
       if (response.statusCode == 200) {
         var weather = json.decode(response.body);
         setState(() {
-          weatherData = null;
+          weatherData = weather;
           isLoading = false;
         });
       } else {

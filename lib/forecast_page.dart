@@ -13,7 +13,7 @@ class ForecastPage extends StatefulWidget {
 }
 
 class _ForecastPageState extends State<ForecastPage> {
-  List<dynamic> forecastData = [];
+  List<dynamic> forecastList = [];
   var cityName = '';
 
   Future<void> fetchForecastData() async {
@@ -26,13 +26,11 @@ class _ForecastPageState extends State<ForecastPage> {
 
     try {
       final response = await http.get(Uri.parse(url));
-      final jsonData = json.decode(response.body);
-
-      final forecastList = jsonData['list'];
+      final forecastResponse = json.decode(response.body);
 
       setState(() {
-        forecastData = forecastList;
-        cityName = jsonData['city']['name'];
+        forecastList = forecastResponse['list'];
+        cityName = forecastResponse['city']['name'];
       });
     } catch (error) {
       log('Error fetching forecast data: $error');
@@ -68,9 +66,9 @@ class _ForecastPageState extends State<ForecastPage> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: forecastData.length,
+              itemCount: forecastList.length,
               itemBuilder: (context, index) {
-                var forecast = forecastData[index];
+                var forecast = forecastList[index];
                 return Column(
                   children: [
                     _ForeCast(
