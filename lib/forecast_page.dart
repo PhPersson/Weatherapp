@@ -88,7 +88,7 @@ class _ForecastPageState extends State<ForecastPage> {
                             icon: _getWeatherIcon(forecast['weather'][0]['id']),
                           ),
                           _ForeCast(
-                            text: '${forecast['weather'][0]['descriptiron']}',
+                            text: '${forecast['weather'][0]['description']}',
                             textStyle:
                                 const TextStyle(fontStyle: FontStyle.italic),
                           ),

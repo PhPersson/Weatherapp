@@ -16,23 +16,24 @@ class WeatherPage extends StatefulWidget {
 
 class _WeatherPageState extends State<WeatherPage> {
   Map<String, dynamic>? weatherData;
+  bool isLoading = true;
 
   Future<void> fetchWeatherData() async {
-    Position position =
-        await fetchGeolocation();
+    Position position = await fetchGeolocation();
     var apiKey = EnvVariables.apiKey;
     var latitude = position.latitude;
     var longitude = position.longitude;
 
     var url =
         'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
-
+    await Future.delayed(Duration(seconds: 2));
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
+        var weather = json.decode(response.body);
         setState(() {
-          weatherData = jsonData;
+          weatherData = null;
+          isLoading = false;
         });
       } else {
         log('Failed to fetch weather data. Error code: ${response.statusCode}');
@@ -67,6 +68,7 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   Widget build(BuildContext context) {
     final currentTime = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -76,46 +78,69 @@ class _WeatherPageState extends State<WeatherPage> {
           ),
         ),
         child: Center(
-          child: weatherData != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Weather(
-                        text:
-                            '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
-                        icon: Icons.thermostat,
-                        textStyle: TextStyle(fontSize: 40)),
-                    Weather(
-                      text: '${weatherData!['weather'][0]['description']}',
-                      icon: _getWeatherIcon(weatherData!['weather'][0]['id']),
-                      textStyle: TextStyle(
-                        fontStyle: FontStyle.italic,
+          child: (() {
+            if (isLoading) {
+              return CircularProgressIndicator(color: Colors.black);
+            } else if (weatherData != null) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Weather(
+                    text:
+                        '${weatherData!['name']} ${weatherData!['main']['temp']}°C',
+                    icon: Icons.thermostat,
+                    textStyle: TextStyle(fontSize: 40),
+                  ),
+                  Weather(
+                    text: '${weatherData!['weather'][0]['description']}',
+                    icon: _getWeatherIcon(weatherData!['weather'][0]['id']),
+                    textStyle: TextStyle(
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  Weather(
+                    text:
+                        'But it feels like: ${weatherData!['main']['feels_like']}',
+                    icon: Icons.thermostat,
+                    textStyle: TextStyle(fontSize: 18),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Weather(
+                        text: 'Wind: ${weatherData!['wind']['speed']}m/s',
+                        textStyle: TextStyle(fontSize: 18),
+                        icon: Icons.air,
                       ),
-                      
-                    ),
-                    Weather(
-                      text:
-                          'But it feels like: ${weatherData!['main']['feels_like']}',
-                      icon: Icons.thermostat,
-                      textStyle: TextStyle(fontSize: 18),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Weather(
-                            text: 'Wind: ${weatherData!['wind']['speed']}m/s',
-                            textStyle: TextStyle(fontSize: 18),
-                            icon: Icons.air),
-                        Weather(text: 'Direction: ${weatherData!['wind']['deg']}°', icon: Icons.navigation, iconSize: 24, textStyle: TextStyle(fontSize: 18))
-                      ],
-                    ),
-                    Text(
-                      currentTime,
-                      style: const TextStyle(fontSize: 13),
-                    ),
-                  ],
-                )
-              : const CircularProgressIndicator(),
+                      Weather(
+                        text: 'Direction: ${weatherData!['wind']['deg']}°',
+                        icon: Icons.navigation,
+                        iconSize: 24,
+                        textStyle: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    currentTime,
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ],
+              );
+            } else {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Failed to fetch weather data',
+                  ),
+                  ElevatedButton(
+                    onPressed: fetchWeatherData,
+                    child: Text('Retry'),
+                  ),
+                ],
+              );
+            }
+          })(),
         ),
       ),
     );
