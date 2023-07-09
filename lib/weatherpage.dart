@@ -36,7 +36,13 @@ class _WeatherPageState extends State<WeatherPage> {
           isLoading = false;
         });
       } else {
-        log('Failed to fetch weather data. Error code: ${response.statusCode}');
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Network error!',
+          text:
+              'Failed to fetch weather data. The API responded with code: ${response.statusCode} ',
+        );
       }
     } catch (error) {
       log('Failed to fetch weather data: $error ');
@@ -67,7 +73,7 @@ class _WeatherPageState extends State<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentTime = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    var currentTime = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     return Scaffold(
       body: Container(

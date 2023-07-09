@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'env_variables.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ForecastPage extends StatefulWidget {
   const ForecastPage({super.key});
@@ -27,11 +28,20 @@ class _ForecastPageState extends State<ForecastPage> {
     try {
       final response = await http.get(Uri.parse(url));
       final forecastResponse = json.decode(response.body);
-
-      setState(() {
-        forecastList = forecastResponse['list'];
-        cityName = forecastResponse['city']['name'];
-      });
+      if (response.statusCode == 200) {
+        setState(() {
+          forecastList = forecastResponse['list'];
+          cityName = forecastResponse['city']['name'];
+        });
+      } else {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Network error!',
+          text:
+              'Failed to fetch forecast data. The API responded with ${response.statusCode} ',
+        );
+      }
     } catch (error) {
       log('Error fetching forecast data: $error');
     }
@@ -62,8 +72,10 @@ class _ForecastPageState extends State<ForecastPage> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 cityName,
-                style:
-                    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Expanded(
@@ -75,7 +87,9 @@ class _ForecastPageState extends State<ForecastPage> {
                     children: [
                       _ForeCast(
                         text: '${forecast['dt_txt']}',
-                        textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       if (forecast['weather'] != null)
                         Row(
@@ -83,37 +97,51 @@ class _ForecastPageState extends State<ForecastPage> {
                           children: [
                             _ForeCast(
                               text: '${forecast['main']['temp']}°C',
-                              textStyle:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              icon:
-                                  _getWeatherIcon(forecast['weather'][0]['id']),
+                              textStyle: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              icon: _getWeatherIcon(
+                                  forecast['weather'][0]['id']),
                             ),
-                            _ForeCast(
-                              text: '${forecast['weather'][0]['description']}',
-                              textStyle:
-                                  const TextStyle(fontStyle: FontStyle.italic),
-                            ),
+                            if (forecast['weather'][0]['description'] != null)
+                              _ForeCast(
+                                text:
+                                    '${forecast['weather'][0]['description']}',
+                                textStyle: const TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
                           ],
                         ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _ForeCast(
-                            text: 'Wind: ${forecast['wind']['speed']}m/s',
-                            icon: Icons.air,
-                          ),
-                        ],
-                      ),Divider()
+                      if (forecast['wind'] != null)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _ForeCast(
+                              text: 'Wind: ${forecast['wind']['speed']}m/s',
+                              icon: Icons.air,
+                            ),
+                          ],
+                        ),Divider()
                     ],
                   );
                 },
               ),
             ),
-          ],
-        ),
+          if (forecastList.isEmpty)
+            Text(
+              'Error: Failed to load forecast data for $cityName.',
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 IconData _getWeatherIcon(int weatherId) {
