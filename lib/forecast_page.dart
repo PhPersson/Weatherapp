@@ -103,7 +103,7 @@ class _ForecastPageState extends State<ForecastPage> {
                             icon: Icons.air,
                           ),
                         ],
-                      ),
+                      ),Divider()
                     ],
                   );
                 },
