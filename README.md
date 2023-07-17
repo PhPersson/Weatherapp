@@ -10,15 +10,20 @@ This Flutter app displays the current and forecast weather information for a spe
   <summary>Forecast</summary>
 
   
-![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGE5ZTkwMGNkMTY1ZWUxODU1YzMxYjgyYzg5ZTdjMDkyYWFhYjBkNSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/uVAk8UIla4K2Bky3Gy/giphy.gif)
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTkyOGpoaXI3ZnI4cWEzdjN6dzhsbGlncGhydHBydzlheDllMWdlMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BlRqIdzbMzo4OWTEYW/giphy.gif)
 </details>
 
 <details>
   <summary>Darkmode</summary>
   
-![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2U1Y2I0ODJkNjdhMDM1M2ZmYzYxYjI1MGI4MjNhNmQxNjc3OWRhNSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/U9AXkDguUJqhbQQm1Q/giphy.gif)
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2ptazhsZGRwc3g1c21uemgwc2RjNXZjeGkwMWF1djcweHAyc3d5bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ng9GGxbztwUVauI45F/giphy.gif)
 </details>
 
+<details>
+  <summary>Denined geolocation</summary>
+  
+![](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExanh1NTN2cDdudjZmb2VscjV5MHVtZTR3NzNlMnRpMnlxbHlxemRpMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZOYqeuyzRgdu9BHMZ2/giphy.gif)
+</details>
 
 
 
@@ -29,7 +34,7 @@ To run this app, follow the steps below:
 2. Clone the repository or download the source code files.
 3. Open the project in your preferred Flutter development environment.
 4. Obtain an API key from OpenWeatherMap
-5. Visit the OpenWeatherMap website at https://openweathermap.org/.
+5. Visit the OpenWeatherMap website at https://home.openweathermap.org/users/sign_up
 6. Create an account or log in to your existing account.
 7. Navigate to the API keys section and generate a new API key.
 8. Copy the generated API key.
