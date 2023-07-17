@@ -106,7 +106,7 @@ class _WeatherPageState extends State<WeatherPage> {
                   ),
                   _Weather(
                     text:
-                        'But it feels like: ${weatherData!['main']['feels_like']}',
+                        'But it feels like: ${weatherData!['main']['feels_like']}°C',
                     icon: Icons.thermostat,
                     textStyle: TextStyle(fontSize: 18),
                   ),
