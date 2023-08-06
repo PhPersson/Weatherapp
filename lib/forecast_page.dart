@@ -122,7 +122,7 @@ class _ForecastPageState extends State<ForecastPage> {
           ),
           if (forecastList.isEmpty)
             Text(
-              'Error: Failed to load forecast data for $cityName.',
+              'Error: Failed to load forecast data.',
               style: TextStyle(
                 color: Colors.red,
                 fontWeight: FontWeight.bold,
