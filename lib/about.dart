@@ -28,7 +28,7 @@ class AboutPage extends StatelessWidget {
                 ),
                 SizedBox(height: 16.0),
                 Text(
-                  'This is an weather app thats developed as a project for the course IDV535 at linnaeus university. \n This app is using Flutter and the OpenWeatherMap API.',
+                  'This is an weather app thats developed as a project for the course IDV535 at linnaeus university. \n This app is using the OpenWeatherMap API to fetch current weather data.',
                   style: TextStyle(fontSize: 18.0),
                   textAlign: TextAlign.center,
                 ),
